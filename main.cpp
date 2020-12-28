@@ -17,7 +17,11 @@
 #include "Dialog.h" 
 #include "RaceCharts.h"
 #include <windows.h>
+#include <QTimer>
+#include <thread>
+#include "Timer.h"
 #include "SharedFileOut.h"
+#include <Qdebug.h>
 
 
 struct AcDataObject {
@@ -52,13 +56,13 @@ void initGraphicsMap() {
 	TCHAR szName[] = TEXT("Local\\acpmf_graphics");
 	graphics_data.hMapFile = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, sizeof(SPageFileGraphic), szName);
 	if (!graphics_data.hMapFile) {
-	//	std::cout << "Failed to create this mapping object!" << std::endl;
+		//	std::cout << "Failed to create this mapping object!" << std::endl;
 		exit(1);
 		//	return 1;
 	}
 	graphics_data.mapFileBuffer = (unsigned char*)MapViewOfFile(graphics_data.hMapFile, FILE_MAP_READ, 0, 0, sizeof(SPageFileGraphic));
 	if (!graphics_data.mapFileBuffer) {
-	//	std::cout << "Map View mem mapped creation failed!" << std::endl;
+		//	std::cout << "Map View mem mapped creation failed!" << std::endl;
 		exit(1);
 		//	return 1;
 	}
@@ -68,6 +72,27 @@ void initGraphicsMap() {
 
 
 
+void callThis(RaceCharts* chart) {
+	SPageFilePhysics* pf = (SPageFilePhysics*)physics_data.mapFileBuffer;
+	SPageFileGraphic* gf = (SPageFileGraphic*)graphics_data.mapFileBuffer;
+	int gearT = 4;
+	 
+//	chart->writeData(QPointF(1000, (float) gearT));
+	if (gf->status != AC_OFF) {
+		qDebug("Current Gear %d\n", pf->gear);
+		int gear = pf->gear == 0 ? 0 : pf->gear - 1;
+		chart->writeData(QPointF(gf->iCurrentTime, gear));
+	}
+	//	wprintf(L"Check here\n");
+
+}
+
+void timerCallBack(RaceCharts* chart) {
+ 
+	Timer* t = new Timer(1ms);
+	t->setInterval(100ms, callThis, chart);
+}
+
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -75,31 +100,41 @@ int main(int argc, char* argv[])
 {
 	initPhysicsMap();
 	initGraphicsMap();
-	QApplication a(argc, argv);
 
-	RaceCharts* rChart = new RaceCharts(10, 5, nullptr);
+	QApplication a(argc, argv);
+	//
+	RaceCharts* rChart = new RaceCharts(60000, 6, nullptr);
+//	qDebug("Race start\n");
+	//	QTimer* timer = new QTimer;
+	std::thread timerThread(timerCallBack, rChart);
+
+
+
+	//
+
 
 	rChart->show();
 
+	timerThread.join();
 	/*SPageFilePhysics* pf = (SPageFilePhysics*)physics_data.mapFileBuffer;
 	SPageFileGraphic* gf = (SPageFileGraphic*)graphics_data.mapFileBuffer;
 
 	while (gf->status != AC_OFF) {
 		wprintf(L"Enter Assetto Corsa! \n");
-	}
+	}*/
 
 
-	QApplication a(argc, argv);
+	//QApplication a(argc, argv);
 
-	const QAudioDeviceInfo inputDevice = QAudioDeviceInfo::defaultInputDevice();
+	//const QAudioDeviceInfo inputDevice = QAudioDeviceInfo::defaultInputDevice();
 
-	if (inputDevice.isNull())
-	{
-		return -1;
-	}
+	//if (inputDevice.isNull())
+	//{
+	//	return -1;
+	//}
 
-	Widget w(inputDevice);
-	w.show();*/
+	//Widget w(inputDevice);
+	//w.show();
 
 	//	Dialog dialog;
 

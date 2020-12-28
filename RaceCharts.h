@@ -18,12 +18,13 @@ class RaceCharts : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit RaceCharts(qreal maxX, qreal maxY, QWidget* parent);
+	RaceCharts(qreal maxX, qreal maxY, QWidget* parent);
 	void writeData(const QPointF& dataPoint);
 	~RaceCharts();
 private:
 	QChart* m_chart;
 	QLineSeries* m_series;
+	qreal maxXVal;
 };
 
 #endif // ! RACE_CHART_H

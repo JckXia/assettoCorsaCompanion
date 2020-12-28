@@ -106,6 +106,8 @@
     <QtMoc Include="xyseriesiodevice.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="event.h" />
+    <ClInclude Include="Timer.h" />
     <QtMoc Include="RaceCharts.h" />
     <ClInclude Include="SharedFileOut.h" />
   </ItemGroup>

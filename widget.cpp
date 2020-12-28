@@ -37,7 +37,9 @@ Widget::Widget(const QAudioDeviceInfo& deviceInfo, QWidget* parent) : QWidget(pa
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	mainLayout->addWidget(chartView);
 
-	QAudioFormat formatAudio;
+	
+	//m_series->replace();
+	/*QAudioFormat formatAudio;
 	formatAudio.setSampleRate(8000);
 	formatAudio.setChannelCount(1);
 	formatAudio.setSampleSize(8);
@@ -50,7 +52,7 @@ Widget::Widget(const QAudioDeviceInfo& deviceInfo, QWidget* parent) : QWidget(pa
 	m_device = new XYSeriesIODevice(m_series, this);
 	m_device->open(QIODevice::WriteOnly);
 
-	m_audioInput->start(m_device);
+	m_audioInput->start(m_device);*/
 }
 
 Widget::~Widget()
