@@ -18,7 +18,7 @@ class RaceCharts : public QWidget
 {
 	Q_OBJECT
 public:
-	RaceCharts(qreal maxX, qreal maxY, QWidget* parent);
+	RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent);
 	void writeData(const QPointF& dataPoint);
 	~RaceCharts();
 private:

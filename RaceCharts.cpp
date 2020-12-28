@@ -8,32 +8,29 @@
 
 QT_CHARTS_USE_NAMESPACE
 
-RaceCharts::RaceCharts(qreal maxX, qreal maxY, QWidget* parent) : QWidget(parent), m_chart(new QChart), m_series(new QLineSeries), maxXVal(maxX) {
+RaceCharts::RaceCharts(const std::string& title, const std::string & yAxisTitle, qreal maxX, qreal maxY, QWidget * parent = nullptr) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), maxXVal(maxX) {
 	QChartView* chartView = new QChartView(m_chart);
-	chartView->setMinimumSize(800, 600);
+	
 	chartView->setRenderHint(QPainter::Antialiasing);
+	m_chart->setMinimumSize(600, 400);
 	//	m_series->append(4, 5);
 	m_chart->addSeries(m_series);
-
+	
+	QString titleStr(title.c_str());
 	QValueAxis* xAxis = new QValueAxis;
 	//	QDateTimeAxis* xAxis = new QDateTimeAxis;
 	xAxis->setRange(0, maxX);
-	xAxis->setTickCount(1);
+ 	xAxis->setTickCount(1);
 	xAxis->setLabelFormat("%f");
 	xAxis->setTitleText("Time");
 
-	//QDateTimeAxis* axisX = new QDateTimeAxis;
-	//axisX->setTickCount(10);
-	//axisX->setFormat("MMM yyyy");
-	//axisX->setTitleText("Date");
-	//chart->addAxis(axisX, Qt::AlignBottom);
-	//series->attachAxis(axisX);
+ 
 
+	QString axisStr(yAxisTitle.c_str());
 	QValueAxis* yAxis = new QValueAxis;
 	yAxis->setRange(0, maxY);	// Considering that this is gear ratio, this would be from 0 to 6. (Most cars have 6 gears)
 	yAxis->setTickInterval(1);
-	yAxis->setLabelFormat("%d");
-	yAxis->setTitleText("Gears");
+	yAxis->setTitleText(axisStr);
 
 	m_chart->addAxis(yAxis, Qt::AlignLeft);
 	m_series->attachAxis(yAxis);
@@ -41,7 +38,7 @@ RaceCharts::RaceCharts(qreal maxX, qreal maxY, QWidget* parent) : QWidget(parent
 	m_chart->addAxis(xAxis, Qt::AlignBottom);
 	m_series->attachAxis(xAxis);
 	m_chart->legend()->hide();
-	m_chart->setTitle("Rpm");
+	m_chart->setTitle(titleStr);
 
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	mainLayout->addWidget(chartView);
@@ -54,7 +51,7 @@ RaceCharts::RaceCharts(qreal maxX, qreal maxY, QWidget* parent) : QWidget(parent
 			maxXVal = xCoord * 2;
 			 
 		}
-	//	wprintf(L"Point Added!\n");
+
 	});
 }
 
@@ -62,12 +59,10 @@ void RaceCharts::writeData(const QPointF& dataPoint) {
 
 
 	m_series->append(dataPoint);
-	// Add Logic with regard to flushing data here
-	// Essentially, if the xLimit is reached, 
-	// set xMax = xMax * 2;
-	// Range from (xMax, xMax * 2)
+ 
 }
 
 RaceCharts::~RaceCharts() {
-
+	delete m_chart;
+	delete m_series;
 }

@@ -78,5 +78,8 @@
     <ClInclude Include="event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="chartMetaData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

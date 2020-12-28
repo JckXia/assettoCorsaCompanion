@@ -9,6 +9,7 @@
 #endif
 
 #include "QtWidgetsApplication2.h"
+#include <QtWidgets>
 #include <QtWidgets/QApplication>
 #include <QtCharts/QLineSeries>
 #include <QtMultimedia/QAudioDeviceInfo>
@@ -22,7 +23,7 @@
 #include "Timer.h"
 #include "SharedFileOut.h"
 #include <Qdebug.h>
-
+#include "chartMetaData.h"
 
 struct AcDataObject {
 	HANDLE hMapFile;
@@ -32,6 +33,8 @@ struct AcDataObject {
 AcDataObject physics_data;
 
 AcDataObject graphics_data;
+
+AcDataObject static_data;
 
 void initPhysicsMap() {
 	TCHAR szName[] = TEXT("Local\\acpmf_physics");
@@ -70,25 +73,55 @@ void initGraphicsMap() {
 	//std::cout << "Graphics Memory Map Creation Successful!" << std::endl;
 }
 
+void initStaticMap() {
+	TCHAR szName[] = TEXT("Local\\acpmf_static");
+	static_data.hMapFile = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, sizeof(SPageFileStatic), szName);
+	if (!static_data.hMapFile)
+	{
+		exit(1);
+	}
+	static_data.mapFileBuffer = (unsigned char*)MapViewOfFile(static_data.hMapFile, FILE_MAP_READ, 0, 0, sizeof(SPageFileStatic));
+	if (!static_data.mapFileBuffer)
+	{
+		exit(1);
+	}
+}
 
 
-void callThis(RaceCharts* chart) {
+
+void callThis(QVector<RaceCharts*> chart) {
 	SPageFilePhysics* pf = (SPageFilePhysics*)physics_data.mapFileBuffer;
 	SPageFileGraphic* gf = (SPageFileGraphic*)graphics_data.mapFileBuffer;
 	int gearT = 4;
-	 
-//	chart->writeData(QPointF(1000, (float) gearT));
+
+	//	chart->writeData(QPointF(1000, (float) gearT));
 	if (gf->status != AC_OFF) {
 		qDebug("Current Gear %d\n", pf->gear);
 		int gear = pf->gear == 0 ? 0 : pf->gear - 1;
-		chart->writeData(QPointF(gf->iCurrentTime, gear));
+
+		std::thread t1([=]() {
+			chart[0]->writeData(QPointF(gf->iCurrentTime, gear));
+			});
+		std::thread t2([=]() {
+			chart[1]->writeData(QPointF(gf->iCurrentTime, (pf->rpms / 1000)));
+			});
+		std::thread t3([=]() {
+			chart[2]->writeData(QPointF(gf->iCurrentTime,pf->brake));
+		});	
+		std::thread t4([=]() {
+			chart[3]->writeData(QPointF(gf->iCurrentTime,pf->speedKmh));
+		});
+
+		t1.join();
+		t2.join();
+		t3.join();
+		t4.join();
 	}
-	//	wprintf(L"Check here\n");
 
 }
 
-void timerCallBack(RaceCharts* chart) {
- 
+void timerCallBack(QVector<RaceCharts*> chart) {
+
 	Timer* t = new Timer(1ms);
 	t->setInterval(100ms, callThis, chart);
 }
@@ -100,72 +133,58 @@ int main(int argc, char* argv[])
 {
 	initPhysicsMap();
 	initGraphicsMap();
+	initStaticMap();
+
+	//	SPageFileStatic* sf = (SPageFileStatic*)static_data.mapFileBuffer;
 
 	QApplication a(argc, argv);
 	//
-	RaceCharts* rChart = new RaceCharts(60000, 6, nullptr);
-//	qDebug("Race start\n");
-	//	QTimer* timer = new QTimer;
-	std::thread timerThread(timerCallBack, rChart);
+	QWidget* window = new QWidget;
 
+	QVector<RaceCharts*>chartObjects;
+	const std::string gearChartTitle = "Gears Chart";
+	const std::string gearAxisTitle = "Gear";
+	RaceCharts* gearChart = new RaceCharts(gearChartTitle, gearAxisTitle, 60000, 6, nullptr);
 
+	// TODO Extract the car's actual max revs from the static mapped memory
+	const std::string rpmChartTitle = "RPM Chart";
+	const std::string rpmAxisTitle = "RPM";
+	RaceCharts* rpmChart = new RaceCharts(rpmChartTitle, rpmAxisTitle, 60000, 12, nullptr);
 
-	//
+	const std::string brakeChartTitle = "Brake Chart";
+	const std::string brakeAxisTitle = "Brake Pressure";
+	RaceCharts* brakeChart = new RaceCharts(brakeChartTitle, brakeAxisTitle, 60000, 1, nullptr);
 
+	const std::string speedChartTitle = "Speed(kmh) Chart";
+	const std::string speedAxisTitle = "Speed (km/h)";
+	RaceCharts* speedChart = new RaceCharts(speedChartTitle, speedAxisTitle, 60000, 250, nullptr);
+	
 
-	rChart->show();
+	chartObjects.push_back(gearChart);
+	chartObjects.push_back(rpmChart);
+	chartObjects.push_back(brakeChart);
+	chartObjects.push_back(speedChart);
+		
 
+	QHBoxLayout* mainGrid = new QHBoxLayout;
+
+	QVBoxLayout* colTwo = new QVBoxLayout;
+	colTwo->addWidget(brakeChart);
+	colTwo->addWidget(speedChart);
+
+	QVBoxLayout* vBoxLayout = new QVBoxLayout;
+	vBoxLayout->addWidget(gearChart);
+	vBoxLayout->addWidget(rpmChart);
+
+ 
+	mainGrid->addLayout(vBoxLayout);
+	mainGrid->addLayout(colTwo);
+	window->setLayout(mainGrid);
+
+	std::thread timerThread(timerCallBack, chartObjects);
+
+	window->show();
 	timerThread.join();
-	/*SPageFilePhysics* pf = (SPageFilePhysics*)physics_data.mapFileBuffer;
-	SPageFileGraphic* gf = (SPageFileGraphic*)graphics_data.mapFileBuffer;
 
-	while (gf->status != AC_OFF) {
-		wprintf(L"Enter Assetto Corsa! \n");
-	}*/
-
-
-	//QApplication a(argc, argv);
-
-	//const QAudioDeviceInfo inputDevice = QAudioDeviceInfo::defaultInputDevice();
-
-	//if (inputDevice.isNull())
-	//{
-	//	return -1;
-	//}
-
-	//Widget w(inputDevice);
-	//w.show();
-
-	//	Dialog dialog;
-
-	//	dialog.show();
-		//QtWidgetsApplication2 w;
-		//QLineSeries* series = new QLineSeries();
-		//series->append(0, 6);
-		//series->append(2, 4);
-		//series->append(3, 8);
-		//series->append(7, 4);
-		//series->append(10, 5);
-
-		//QChart* chart = new QChart();
-		//chart->legend()->hide();
-		//chart->addSeries(series);
-		//chart->createDefaultAxes();
-		//chart->setTitle("Simple line chart example");
-
-
-		//QChartView* chartView = new QChartView(chart);
-		//chartView->setRenderHint(QPainter::Antialiasing);
-
-
-		//QMainWindow window;
-
-		//window.setCentralWidget(chartView);
-		//window.resize(400, 300);
-		//window.show();
-
-
-
-		// w.show();
 	return a.exec();
 }

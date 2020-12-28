@@ -37,22 +37,7 @@ Widget::Widget(const QAudioDeviceInfo& deviceInfo, QWidget* parent) : QWidget(pa
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	mainLayout->addWidget(chartView);
 
-	
-	//m_series->replace();
-	/*QAudioFormat formatAudio;
-	formatAudio.setSampleRate(8000);
-	formatAudio.setChannelCount(1);
-	formatAudio.setSampleSize(8);
-	formatAudio.setCodec("audio/pcm");
-	formatAudio.setByteOrder(QAudioFormat::LittleEndian);
-	formatAudio.setSampleType(QAudioFormat::UnSignedInt);
-
-	m_audioInput = new QAudioInput(deviceInfo, formatAudio, this);
-
-	m_device = new XYSeriesIODevice(m_series, this);
-	m_device->open(QIODevice::WriteOnly);
-
-	m_audioInput->start(m_device);*/
+ 
 }
 
 Widget::~Widget()

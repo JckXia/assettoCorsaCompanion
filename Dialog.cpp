@@ -193,7 +193,7 @@ Dialog::Dialog()
 	QHBoxLayout* hBoxLayout = new QHBoxLayout;
 	
 	hBoxLayout->setMenuBar(menuBar);
-	hBoxLayout->addWidget(raceChartsGroupBox);
+	hBoxLayout->addWidget(raceChartsGroupBox); 
 	hBoxLayout->addWidget(misc);
 	//raceChartsGroupBox->palette()->setColor();
 
