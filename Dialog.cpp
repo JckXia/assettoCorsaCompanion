@@ -114,8 +114,8 @@ Dialog::Dialog()
 
 
 	QGroupBox* raceChartGroupBoxTwo = new QGroupBox;
-	
-	
+
+
 	QLineSeries* secondSeies = new QLineSeries();
 	secondSeies->append(0, 5);
 	secondSeies->append(1, 5);
@@ -153,26 +153,64 @@ Dialog::Dialog()
 
 
 
+	QGroupBox* misc = new QGroupBox();
+	QGridLayout* gridLayout = new QGridLayout;
+	QVBoxLayout* raceLayout = new QVBoxLayout;
 
+
+	QTableWidget* tableWidget = new QTableWidget(4, 3, misc);
+
+	tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::Stretch);
 	
+//	tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::Stretch);
+//	tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::Stretch);
+	//	tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	//	tableWidget->verticalHeader()->setStretchLastSection(true);
+	tableWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+	//	tableWidget->setColumnWidth(0, 100);
+		//tableWidget->setColumnWidth(1, 100);
+	//	tableWidget->setColumnWidth(2, 100);
+//	tableWidget->setContentsMargins(1, 1, 1, 1);
+	tableWidget->setMaximumWidth(340);
+//	tableWidget->setStyleSheet("QTableWidget::item {padding: 200px}");
+//	tableWidget->setMaximumHeight(200);
+	//tableWidget->setRowCount(4);
+//	tableWidget->setColumnCount(3);
+//	tableWidget->setMaximumHeight(100);
+//	tableWidget->setMinimumSize(QSize(0, 3));
+//	tableWidget->setMaximumWidth(100);
+	gridLayout->addWidget(tableWidget);
+	 
+//	gridLayout->addWidget(tableWidget,0,0,Qt::Alignment::enum_type::AlignCenter);
+	misc->setLayout(gridLayout);
+
+	// raceLayout->addWidget(tableWidget);
+//	misc->setLayout(raceLayout); 
+
+//	QTableWidget* raceTableWidget = new QTableWidget(12, 3, this);
+
+
 	QHBoxLayout* hBoxLayout = new QHBoxLayout;
+	
 	hBoxLayout->setMenuBar(menuBar);
 	hBoxLayout->addWidget(raceChartsGroupBox);
+	hBoxLayout->addWidget(misc);
+	//raceChartsGroupBox->palette()->setColor();
 
 	setLayout(hBoxLayout);
-//	hBoxLayout->setMenuBar(menuBar);
-	//hBoxLayout->addWidget(raceChartsGroupBox);
-	//	hBoxLayout->addLayout(verlayout);
-		//hBoxLayout->addWidget(gridGroupBox);
-		//hBoxLayout->addWidget(gridGroupBoxTwo);
+	//	hBoxLayout->setMenuBar(menuBar);
+		//hBoxLayout->addWidget(raceChartsGroupBox);
+		//	hBoxLayout->addLayout(verlayout);
+			//hBoxLayout->addWidget(gridGroupBox);
+			//hBoxLayout->addWidget(gridGroupBoxTwo);
 
-		//  mainLayout->setMenuBar(menuBar);
-		  //! [3] //! [4]
-		//  mainLayout->addWidget(horizontalGroupBox);
-		 // mainLayout->addWidget(gridGroupBox);
-		 // mainLayout->addWidget(gridGroupBox);
-		  //! [4] //! [5]
-//	setLayout(hBoxLayout);
+			//  mainLayout->setMenuBar(menuBar);
+			  //! [3] //! [4]
+			//  mainLayout->addWidget(horizontalGroupBox);
+			 // mainLayout->addWidget(gridGroupBox);
+			 // mainLayout->addWidget(gridGroupBox);
+			  //! [4] //! [5]
+	//	setLayout(hBoxLayout);
 
 
 	setWindowTitle(tr("Basic Layouts"));
