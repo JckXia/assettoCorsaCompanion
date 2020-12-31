@@ -3,12 +3,14 @@
 #include <QtCore/QVector>
 #include <QtWidgets/QVBoxLayout>
 #include <QtCharts/QDateTimeAxis>
+#include "RaceChartView.h"
 #include "RaceCharts.h"
 
 QT_CHARTS_USE_NAMESPACE
 
 RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), maxXVal(maxX), incVal(maxX) {
-	QChartView* chartView = new QChartView(m_chart);
+//	QChartView* chartView = new QChartView(m_chart);
+	RaceChartView* chartView = new RaceChartView(m_chart);
 
 	chartView->setRenderHint(QPainter::Antialiasing);
 	m_chart->setMinimumSize(600, 400);
@@ -42,7 +44,6 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	mainLayout->addWidget(chartView);
-
 	connect(m_series, &QLineSeries::pointAdded, [=](int index) {
 		qreal xCoord = m_series->at(index).x();
 		if (xCoord > maxXVal) {
@@ -54,6 +55,7 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 
 		});
 }
+ 
 
 void RaceCharts::writeData(const QPointF& dataPoint) {
 

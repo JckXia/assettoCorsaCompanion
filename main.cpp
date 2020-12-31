@@ -140,6 +140,7 @@ int main(int argc, char* argv[])
 	QApplication a(argc, argv);
 	//
 	QWidget* window = new QWidget;
+	window->setWindowTitle("Assetto Corsa Companion");
 
 	QVector<RaceCharts*>chartObjects;
 	const std::string gearChartTitle = "Gears Chart";
