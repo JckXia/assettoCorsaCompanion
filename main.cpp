@@ -19,7 +19,7 @@
 #include "Timer.h"
 #include "SharedFileOut.h"
 
- 
+
 
 #define MAX_X 60000
 
@@ -94,11 +94,11 @@ void callThis(QVector<RaceCharts*> chart) {
 
 	//	chart->writeData(QPointF(1000, (float) gearT));
 	if (gf->status != AC_OFF) {
-	//	qDebug("Current Gear %d\n", pf->gear);
-		int gear = pf->gear == 0 ? 0 : pf->gear - 1; 
+		//	qDebug("Current Gear %d\n", pf->gear);
+		int gear = pf->gear == 0 ? 0 : pf->gear - 1;
 		int normalizedTime = gf->iCurrentTime;
 
-	
+
 		std::thread t1([=]() {
 			chart[0]->writeData(QPointF(normalizedTime, gear));
 			});
@@ -106,11 +106,11 @@ void callThis(QVector<RaceCharts*> chart) {
 			chart[1]->writeData(QPointF(normalizedTime, pf->rpms));
 			});
 		std::thread t3([=]() {
-			chart[2]->writeData(QPointF(normalizedTime,pf->brake));
-		});	
+			chart[2]->writeData(QPointF(normalizedTime, pf->brake));
+			});
 		std::thread t4([=]() {
-			chart[3]->writeData(QPointF(normalizedTime,pf->speedKmh));
-		});
+			chart[3]->writeData(QPointF(normalizedTime, pf->speedKmh));
+			});
 
 		t1.join();
 		t2.join();
@@ -146,6 +146,14 @@ int main(int argc, char* argv[])
 	const std::string gearChartTitle = "Gears Chart";
 	const std::string gearAxisTitle = "Gear";
 	RaceCharts* gearChart = new RaceCharts(gearChartTitle, gearAxisTitle, MAX_X, 6, nullptr);
+ 
+
+	//gearChart->setCursor(QPointF(1000,4));
+	//gearChart->writeData(QPointF(2000,5));
+	
+	
+	
+	
 
 	// TODO Extract the car's actual max revs from the static mapped memory
 	const std::string rpmChartTitle = "RPM Chart";
@@ -158,14 +166,14 @@ int main(int argc, char* argv[])
 
 	const std::string speedChartTitle = "Speed(kmh) Chart";
 	const std::string speedAxisTitle = "Speed (km/h)";
-	RaceCharts* speedChart = new RaceCharts(speedChartTitle, speedAxisTitle, MAX_X , 250, nullptr);
-	
+	RaceCharts* speedChart = new RaceCharts(speedChartTitle, speedAxisTitle, MAX_X, 250, nullptr);
+
 
 	chartObjects.push_back(gearChart);
 	chartObjects.push_back(rpmChart);
 	chartObjects.push_back(brakeChart);
 	chartObjects.push_back(speedChart);
-		
+
 
 	QHBoxLayout* mainGrid = new QHBoxLayout;
 
@@ -177,7 +185,7 @@ int main(int argc, char* argv[])
 	vBoxLayout->addWidget(gearChart);
 	vBoxLayout->addWidget(rpmChart);
 
- 
+
 	mainGrid->addLayout(vBoxLayout);
 	mainGrid->addLayout(colTwo);
 	window->setLayout(mainGrid);

@@ -22,10 +22,12 @@ class RaceCharts : public QWidget
 public:
 	RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent);
 	void writeData(const QPointF& dataPoint);
+	void setCursor(const QPointF& cursorPoint);
 	~RaceCharts();
 private:
 	QChart* m_chart;
 	QLineSeries* m_series;
+	QLineSeries* trace_points;
 	const qreal incVal;
 	qreal lastXCoord;
 	QMutex m_lock;
