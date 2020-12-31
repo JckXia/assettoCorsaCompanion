@@ -41,27 +41,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="xyseriesiodevice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="widget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RaceCharts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Dialog.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Widget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="xyseriesiodevice.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="RaceCharts.h">
@@ -76,9 +61,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="event.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="chartMetaData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

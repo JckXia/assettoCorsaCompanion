@@ -87,12 +87,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="RaceCharts.cpp" />
-    <ClCompile Include="widget.cpp" />
-    <ClCompile Include="xyseriesiodevice.cpp" />
     <QtRcc Include="QtWidgetsApplication2.qrc" />
     <QtUic Include="QtWidgetsApplication2.ui" />
     <QtMoc Include="QtWidgetsApplication2.h" />
-    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="QtWidgetsApplication2.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -100,13 +97,6 @@
     <QtMoc Include="Dialog.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="Widget.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="xyseriesiodevice.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="chartMetaData.h" />
     <ClInclude Include="event.h" />
     <ClInclude Include="Timer.h" />
     <QtMoc Include="RaceCharts.h" />

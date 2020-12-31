@@ -12,18 +12,16 @@
 #include <QtWidgets>
 #include <QtWidgets/QApplication>
 #include <QtCharts/QLineSeries>
-#include <QtMultimedia/QAudioDeviceInfo>
 #include <QtCharts/QChartView>
-#include "Widget.h"
-#include "Dialog.h" 
 #include "RaceCharts.h"
 #include <windows.h>
-#include <QTimer>
 #include <thread>
 #include "Timer.h"
 #include "SharedFileOut.h"
-#include <Qdebug.h>
-#include "chartMetaData.h"
+
+ 
+
+#define MAX_X 60000
 
 struct AcDataObject {
 	HANDLE hMapFile;
@@ -96,20 +94,22 @@ void callThis(QVector<RaceCharts*> chart) {
 
 	//	chart->writeData(QPointF(1000, (float) gearT));
 	if (gf->status != AC_OFF) {
-		qDebug("Current Gear %d\n", pf->gear);
-		int gear = pf->gear == 0 ? 0 : pf->gear - 1;
+	//	qDebug("Current Gear %d\n", pf->gear);
+		int gear = pf->gear == 0 ? 0 : pf->gear - 1; 
+		int normalizedTime = gf->iCurrentTime;
 
+	
 		std::thread t1([=]() {
-			chart[0]->writeData(QPointF(gf->iCurrentTime, gear));
+			chart[0]->writeData(QPointF(normalizedTime, gear));
 			});
 		std::thread t2([=]() {
-			chart[1]->writeData(QPointF(gf->iCurrentTime, (pf->rpms / 1000)));
+			chart[1]->writeData(QPointF(normalizedTime, pf->rpms));
 			});
 		std::thread t3([=]() {
-			chart[2]->writeData(QPointF(gf->iCurrentTime,pf->brake));
+			chart[2]->writeData(QPointF(normalizedTime,pf->brake));
 		});	
 		std::thread t4([=]() {
-			chart[3]->writeData(QPointF(gf->iCurrentTime,pf->speedKmh));
+			chart[3]->writeData(QPointF(normalizedTime,pf->speedKmh));
 		});
 
 		t1.join();
@@ -144,20 +144,20 @@ int main(int argc, char* argv[])
 	QVector<RaceCharts*>chartObjects;
 	const std::string gearChartTitle = "Gears Chart";
 	const std::string gearAxisTitle = "Gear";
-	RaceCharts* gearChart = new RaceCharts(gearChartTitle, gearAxisTitle, 60000, 6, nullptr);
+	RaceCharts* gearChart = new RaceCharts(gearChartTitle, gearAxisTitle, MAX_X, 6, nullptr);
 
 	// TODO Extract the car's actual max revs from the static mapped memory
 	const std::string rpmChartTitle = "RPM Chart";
 	const std::string rpmAxisTitle = "RPM";
-	RaceCharts* rpmChart = new RaceCharts(rpmChartTitle, rpmAxisTitle, 60000, 12, nullptr);
+	RaceCharts* rpmChart = new RaceCharts(rpmChartTitle, rpmAxisTitle, MAX_X, 6000, nullptr);
 
 	const std::string brakeChartTitle = "Brake Chart";
 	const std::string brakeAxisTitle = "Brake Pressure";
-	RaceCharts* brakeChart = new RaceCharts(brakeChartTitle, brakeAxisTitle, 60000, 1, nullptr);
+	RaceCharts* brakeChart = new RaceCharts(brakeChartTitle, brakeAxisTitle, MAX_X, 1, nullptr);
 
 	const std::string speedChartTitle = "Speed(kmh) Chart";
 	const std::string speedAxisTitle = "Speed (km/h)";
-	RaceCharts* speedChart = new RaceCharts(speedChartTitle, speedAxisTitle, 60000, 250, nullptr);
+	RaceCharts* speedChart = new RaceCharts(speedChartTitle, speedAxisTitle, MAX_X , 250, nullptr);
 	
 
 	chartObjects.push_back(gearChart);

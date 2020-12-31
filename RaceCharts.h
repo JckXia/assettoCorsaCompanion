@@ -4,6 +4,8 @@
 #include <QtWidgets/QWidget>
 #include <QtCharts/QChart>
 #include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
+#include <QMutex>
 QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;
 class QChart;
@@ -24,7 +26,11 @@ public:
 private:
 	QChart* m_chart;
 	QLineSeries* m_series;
+	const qreal incVal;
+	qreal lastXCoord;
+	QMutex m_lock;
 	qreal maxXVal;
+	QValueAxis* m_xAxis;
 };
 
 #endif // ! RACE_CHART_H

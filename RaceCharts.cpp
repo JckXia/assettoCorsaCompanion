@@ -1,6 +1,5 @@
 #pragma once
 #include <QtCharts/QChartView>
-#include <QtCharts/QValueAxis>
 #include <QtCore/QVector>
 #include <QtWidgets/QVBoxLayout>
 #include <QtCharts/QDateTimeAxis>
@@ -8,23 +7,24 @@
 
 QT_CHARTS_USE_NAMESPACE
 
-RaceCharts::RaceCharts(const std::string& title, const std::string & yAxisTitle, qreal maxX, qreal maxY, QWidget * parent = nullptr) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), maxXVal(maxX) {
+RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), maxXVal(maxX), incVal(maxX) {
 	QChartView* chartView = new QChartView(m_chart);
-	
+
 	chartView->setRenderHint(QPainter::Antialiasing);
 	m_chart->setMinimumSize(600, 400);
 	//	m_series->append(4, 5);
 	m_chart->addSeries(m_series);
-	
+
 	QString titleStr(title.c_str());
 	QValueAxis* xAxis = new QValueAxis;
 	//	QDateTimeAxis* xAxis = new QDateTimeAxis;
 	xAxis->setRange(0, maxX);
- 	xAxis->setTickCount(1);
+	xAxis->setTickCount(1);
 	xAxis->setLabelFormat("%f");
 	xAxis->setTitleText("Time");
 
- 
+	m_xAxis = xAxis;
+
 
 	QString axisStr(yAxisTitle.c_str());
 	QValueAxis* yAxis = new QValueAxis;
@@ -46,20 +46,38 @@ RaceCharts::RaceCharts(const std::string& title, const std::string & yAxisTitle,
 	connect(m_series, &QLineSeries::pointAdded, [=](int index) {
 		qreal xCoord = m_series->at(index).x();
 		if (xCoord > maxXVal) {
-		//	m_series->clear();
-			xAxis->setRange(maxXVal, xCoord + maxXVal);
-			maxXVal = xCoord * 2;
-			 
+			//	m_series->clear();
+		//	xAxis->setRange(maxXVal, xCoord + maxXVal);
+	//		maxXVal = xCoord * 2;
+
 		}
 
-	});
+		});
 }
 
 void RaceCharts::writeData(const QPointF& dataPoint) {
 
+	if ((dataPoint.x() > maxXVal))
+	{
+		// We can safely clear the old series
+		m_series->clear();
+		m_xAxis->setRange(maxXVal, maxXVal + incVal);
+		maxXVal = maxXVal + incVal;
+	}
+
+	// Lap complete
+	if (dataPoint.x() < lastXCoord) {
+
+		m_series->clear();
+		m_xAxis->setRange(0, incVal);
+		maxXVal = incVal;	// Rest
+	}
+
+	//	m_lock.lock();
+	lastXCoord = dataPoint.x();
+	//	m_lock.unlock();
 
 	m_series->append(dataPoint);
- 
 }
 
 RaceCharts::~RaceCharts() {
