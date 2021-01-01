@@ -135,10 +135,8 @@ int main(int argc, char* argv[])
 	initGraphicsMap();
 	initStaticMap();
 
-	//	SPageFileStatic* sf = (SPageFileStatic*)static_data.mapFileBuffer;
-
 	QApplication a(argc, argv);
-	//
+	
 	QWidget* window = new QWidget;
 	window->setWindowTitle("Assetto Corsa Companion");
 

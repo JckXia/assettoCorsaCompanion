@@ -1,5 +1,5 @@
 #include "RaceChartView.h"
-#include <QDebug>
+
 QT_USE_NAMESPACE
 RaceChartView::RaceChartView(QChart* chart, QWidget* parent) : QChartView(chart, parent)
 {

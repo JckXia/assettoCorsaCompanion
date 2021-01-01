@@ -50,17 +50,6 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	mainLayout->addWidget(chartView);
-
-	//connect(m_series, &QLineSeries::pointAdded, [=](int index) {
-	//	qreal xCoord = m_series->at(index).x();
-	//	if (xCoord > maxXVal) {
-	//		//	m_series->clear();
-	//	//	xAxis->setRange(maxXVal, xCoord + maxXVal);
-	////		maxXVal = xCoord * 2;
-
-	//	}
-
-	//	});
 }
 
 
