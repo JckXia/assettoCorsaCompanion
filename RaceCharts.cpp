@@ -11,13 +11,13 @@ QT_CHARTS_USE_NAMESPACE
 RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), trace_points(new QLineSeries), maxXVal(maxX), incVal(maxX) {
 	//	QChartView* chartView = new QChartView(m_chart);
 	RaceChartView* chartView = new RaceChartView(m_chart);
-	
-	
+
+	chartView->setRaceChart(this);
 	chartView->setRenderHint(QPainter::Antialiasing);
 	m_chart->setMinimumSize(600, 400);
 	m_chart->addSeries(m_series);
 	m_chart->addSeries(trace_points);
-		
+
 	QString titleStr(title.c_str());
 	QValueAxis* xAxis = new QValueAxis;
 	//	QDateTimeAxis* xAxis = new QDateTimeAxis;
@@ -35,7 +35,7 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 	yAxis->setTickInterval(1);
 	yAxis->setTitleText(axisStr);
 
-	 
+
 
 	m_chart->addAxis(yAxis, Qt::AlignLeft);
 	m_series->attachAxis(yAxis);
@@ -72,9 +72,12 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 // will be unique
 void RaceCharts::setCursor(const QPointF& cursorPoint)
 {
+	trace_points->clear();
 	trace_points->setColor(Qt::red);
-
-	trace_points->append(cursorPoint);
+	if (cursorPoint.x() >= 0) {
+		trace_points->append(cursorPoint);
+		trace_points->append(cursorPoint);
+	}
 }
 
 void RaceCharts::writeData(const QPointF& dataPoint) {

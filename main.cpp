@@ -148,13 +148,6 @@ int main(int argc, char* argv[])
 	RaceCharts* gearChart = new RaceCharts(gearChartTitle, gearAxisTitle, MAX_X, 6, nullptr);
  
 
-	//gearChart->setCursor(QPointF(1000,4));
-	//gearChart->writeData(QPointF(2000,5));
-	
-	
-	
-	
-
 	// TODO Extract the car's actual max revs from the static mapped memory
 	const std::string rpmChartTitle = "RPM Chart";
 	const std::string rpmAxisTitle = "RPM";
