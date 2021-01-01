@@ -8,7 +8,7 @@
 
 QT_CHARTS_USE_NAMESPACE
 
-RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), trace_points(new QScatterSeries), maxXVal(maxX), incVal(maxX) {
+RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr, unsigned short pid = 0) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), trace_points(new QScatterSeries), maxXVal(maxX), incVal(maxX), m_pid(pid) {
 	//	QChartView* chartView = new QChartView(m_chart);
 	RaceChartView* chartView = new RaceChartView(m_chart);
 
@@ -37,7 +37,7 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 	yAxis->setTitleText(axisStr);
 
 	trace_points->setMarkerShape(QScatterSeries::MarkerShapeCircle);
-	trace_points->setMarkerSize(7.0);
+	trace_points->setMarkerSize(7.5);
 
 	m_chart->addAxis(yAxis, Qt::AlignLeft);
 	m_series->attachAxis(yAxis);
@@ -55,6 +55,18 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 }
 
 
+void RaceCharts::attachRaceChartSubject(RaceChartSubject* subject)
+{
+	this->m_subject = subject;
+	this->m_subject->attachRaceChartObv(this);
+}
+
+
+unsigned short RaceCharts::getPid()
+{
+	return m_pid;
+}
+
 // Here we check for a few things:
 // 1. The x point is greater than 0
 // TODO: The x coordinates exists within some buffer.
@@ -67,6 +79,18 @@ void RaceCharts::setCursor(const QPointF& cursorPoint)
 	trace_points->setColor(Qt::red);
 	if (cursorPoint.x() >= 0) {
 		trace_points->append(cursorPoint);
+		m_subject->update(getPid(), cursorPoint.x());
+	}
+}
+
+// This is the 'on call' function which is called when another cursor is traced
+void RaceCharts::setCursorOnX(float xCoord)
+{
+	trace_points->clear();
+	trace_points->setColor(Qt::red);
+	if (xCoord >= 0)
+	{
+	//	trace_points->append(QPointF(xCoord, 10));
 	}
 }
 
