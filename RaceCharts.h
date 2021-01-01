@@ -5,6 +5,7 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
+#include <QtCharts/QScatterSeries>
 #include <QMutex>
 QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;
@@ -27,7 +28,7 @@ public:
 private:
 	QChart* m_chart;
 	QLineSeries* m_series;
-	QLineSeries* trace_points;
+	QScatterSeries* trace_points;
 	const qreal incVal;
 	qreal lastXCoord;
 	QMutex m_lock;

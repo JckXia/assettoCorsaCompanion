@@ -8,9 +8,10 @@
 
 QT_CHARTS_USE_NAMESPACE
 
-RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), trace_points(new QLineSeries), maxXVal(maxX), incVal(maxX) {
+RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), trace_points(new QScatterSeries), maxXVal(maxX), incVal(maxX) {
 	//	QChartView* chartView = new QChartView(m_chart);
 	RaceChartView* chartView = new RaceChartView(m_chart);
+
 
 	chartView->setRaceChart(this);
 	chartView->setRenderHint(QPainter::Antialiasing);
@@ -35,7 +36,8 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 	yAxis->setTickInterval(1);
 	yAxis->setTitleText(axisStr);
 
-
+	trace_points->setMarkerShape(QScatterSeries::MarkerShapeCircle);
+	trace_points->setMarkerSize(7.0);
 
 	m_chart->addAxis(yAxis, Qt::AlignLeft);
 	m_series->attachAxis(yAxis);
