@@ -67,7 +67,6 @@ void RaceCharts::setCursor(const QPointF& cursorPoint)
 	trace_points->setColor(Qt::red);
 	if (cursorPoint.x() >= 0) {
 		trace_points->append(cursorPoint);
-		trace_points->append(cursorPoint);
 	}
 }
 
