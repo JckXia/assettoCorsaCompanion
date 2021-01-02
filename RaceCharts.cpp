@@ -125,33 +125,6 @@ void RaceCharts::setCursorOnX(float xCoord)
 				trace_points->append(QPointF(xCoord, dataPoint->second));
 			}
 		}
-		//		//	ceil(2.1);
-	/*	std::map<int, int> testMap;
-		testMap.insert({ 687,415 });
-		testMap.insert({ 700,415 });
-		testMap.insert({ 695, 120 });
-		testMap.insert({ 780,500 });
-		auto check = testMap.lower_bound(688);
-		auto secondChek = std::prev(check);
-		wprintf(L"Test\n");*/
-		//
-		////		auto data = testMap.lower_bound(689);
-		//		auto lowerboundDataPt = testMap.lower_bound(689);
-		//		auto higherBoundDataPr = testMap.upper_bound(689);
-		//		if (lowerboundDataPt != testMap.end())
-		//		{
-		//			wprintf(L"Check\n");
-		//			//std::count << "Check\n";
-		//		}
-		//		if (higherBoundDataPr != testMap.end())
-		//		{
-		//			wprintf(L"Test\n");
-		//		}
-
-		//		auto higherBOund = testMap.upper_bound(689);
-		//	auto data = trace_points->at(xCoord)
-		//	qDebug() << "Function returned data " << data << endl;
-		/*qDebug() << " Chart PID " << this->m_pid << " reacting to xCoord " << (int)xCoord;*/
 
 	}
 }
