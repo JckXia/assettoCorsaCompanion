@@ -7,6 +7,8 @@
 #include <QtCharts/QValueAxis>
 #include <QtCharts/QScatterSeries>
 #include <QMutex>
+#include <vector>
+#include <map>
 #include "RaceChartSubject.h"
 QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;
@@ -18,6 +20,8 @@ QT_CHARTS_USE_NAMESPACE
 
 class RaceChartSubject;
 
+// TODO this is starting to get cluttered, refactor this 
+// class later
 class RaceCharts : public QWidget
 {
 	Q_OBJECT
@@ -31,6 +35,8 @@ public:
 	~RaceCharts();
 private:
 	
+	std::vector<std::map<int, float>> lapTelemetry;
+	int currentLapCount = 0;
 	RaceChartSubject* m_subject;
 	unsigned short m_pid;
 	QChart* m_chart;

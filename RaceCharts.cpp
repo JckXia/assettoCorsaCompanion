@@ -3,15 +3,19 @@
 #include <QtCore/QVector>
 #include <QtWidgets/QVBoxLayout>
 #include <QtCharts/QDateTimeAxis>
+#include <QDebug>
+#include <map>
 #include "RaceChartView.h"
 #include "RaceCharts.h"
+
 
 QT_CHARTS_USE_NAMESPACE
 
 RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr, unsigned short pid = 0) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), trace_points(new QScatterSeries), maxXVal(maxX), incVal(maxX), m_pid(pid) {
 	//	QChartView* chartView = new QChartView(m_chart);
 	RaceChartView* chartView = new RaceChartView(m_chart);
-
+	std::map<int, float> u;
+	lapTelemetry.push_back(u);
 
 	chartView->setRaceChart(this);
 	chartView->setRenderHint(QPainter::Antialiasing);
@@ -76,6 +80,7 @@ unsigned short RaceCharts::getPid()
 void RaceCharts::setCursor(const QPointF& cursorPoint)
 {
 	trace_points->clear();
+	trace_points->setPointLabelsVisible(true);
 	trace_points->setColor(Qt::red);
 	if (cursorPoint.x() >= 0) {
 		trace_points->append(cursorPoint);
@@ -83,17 +88,80 @@ void RaceCharts::setCursor(const QPointF& cursorPoint)
 	}
 }
 
+
 // This is the 'on call' function which is called when another cursor is traced
 void RaceCharts::setCursorOnX(float xCoord)
 {
 	trace_points->clear();
 	trace_points->setColor(Qt::red);
+	trace_points->setPointLabelsVisible(true);
+
 	if (xCoord >= 0)
 	{
-	//	trace_points->append(QPointF(xCoord, 10));
+		auto currentLapData = lapTelemetry[currentLapCount];
+		auto low = currentLapData.lower_bound((int)xCoord);
+
+		if (low == currentLapData.begin() && low != currentLapData.end())
+		{
+			auto dataPoint = currentLapData.begin();
+			trace_points->append(QPointF(xCoord, dataPoint->second));
+		}
+		else if (low != currentLapData.end())
+		{
+			auto boundaryCheck = std::prev(low);
+			if (boundaryCheck != currentLapData.end()) {
+				if (abs(xCoord - boundaryCheck->first) < abs(low->first - xCoord))
+				{
+					// Take the boundaryCheck's y value
+					trace_points->append(QPointF(xCoord, boundaryCheck->second));
+				}
+				else {
+					// Take the low's y value;
+					trace_points->append(QPointF(xCoord, low->second));
+				}
+			}
+			else {
+				auto dataPoint = low;
+				trace_points->append(QPointF(xCoord, dataPoint->second));
+			}
+		}
+		//		//	ceil(2.1);
+	/*	std::map<int, int> testMap;
+		testMap.insert({ 687,415 });
+		testMap.insert({ 700,415 });
+		testMap.insert({ 695, 120 });
+		testMap.insert({ 780,500 });
+		auto check = testMap.lower_bound(688);
+		auto secondChek = std::prev(check);
+		wprintf(L"Test\n");*/
+		//
+		////		auto data = testMap.lower_bound(689);
+		//		auto lowerboundDataPt = testMap.lower_bound(689);
+		//		auto higherBoundDataPr = testMap.upper_bound(689);
+		//		if (lowerboundDataPt != testMap.end())
+		//		{
+		//			wprintf(L"Check\n");
+		//			//std::count << "Check\n";
+		//		}
+		//		if (higherBoundDataPr != testMap.end())
+		//		{
+		//			wprintf(L"Test\n");
+		//		}
+
+		//		auto higherBOund = testMap.upper_bound(689);
+		//	auto data = trace_points->at(xCoord)
+		//	qDebug() << "Function returned data " << data << endl;
+		/*qDebug() << " Chart PID " << this->m_pid << " reacting to xCoord " << (int)xCoord;*/
+
 	}
 }
 
+/*
+	TODO: Right now a single thread has access to a single
+		  chart. When there are multiple threads there will
+		  likely be race conditions. Refactor this later
+
+*/
 void RaceCharts::writeData(const QPointF& dataPoint) {
 
 	if ((dataPoint.x() > maxXVal))
@@ -106,19 +174,22 @@ void RaceCharts::writeData(const QPointF& dataPoint) {
 
 	// Lap complete
 	if (dataPoint.x() < lastXCoord) {
+		currentLapCount++;
+
+		std::map<int, float> u;
+		lapTelemetry.push_back(u);
 
 		m_series->clear();
 		m_xAxis->setRange(0, incVal);
 		maxXVal = incVal;	// Rest
 	}
 
-	//	m_lock.lock();
 	lastXCoord = dataPoint.x();
-	//	m_lock.unlock();
-//	trace_points->setColor(Qt::green);
-//	trace_points->append(dataPoint);
-//	trace_points->append(dataPoint);
 	m_series->append(dataPoint);
+
+	// Get the unordered map from the vector,
+	// then index into the unordered map by the x coordinate(Time stamp)
+	lapTelemetry[currentLapCount].insert({ (int)dataPoint.x(), dataPoint.y() });
 }
 
 RaceCharts::~RaceCharts() {
