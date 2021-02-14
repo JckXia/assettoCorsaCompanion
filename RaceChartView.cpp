@@ -25,12 +25,17 @@ void RaceChartView::mouseMoveEvent(QMouseEvent* event) {
 		// Here we would need to scroll to the right
 		if (thetaPos >= 0)
 		{
-			chart()->scroll((chart()->plotArea().width()) / 60000, 0);
+			chart()->scroll(((chart()->plotArea().width())) / 60000, 0);
+			m_chart->mainViewPort->moveViewPortRight(1);
 		}
 		else {
 		// Scroll ot left, but have to make sure current x coord has to be greater than 0;
-		// Need to keep a viewport obejct... ughhh
-			chart()->scroll((chart()->plotArea().width() * -1) / 60000, 0);
+			auto viewPort = m_chart->mainViewPort->getViewPort();
+ 
+			if (viewPort.first > 0) {
+				chart()->scroll((chart()->plotArea().width() * -1) / 60000, 0);
+			}
+			m_chart->mainViewPort->moveViewPortLeft(1);
 		}
 		m_chart->setLastMousePos((QPointF)valueGivenSeries);
 		event->accept();	

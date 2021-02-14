@@ -54,6 +54,7 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 	m_chart->legend()->hide();
 	m_chart->setTitle(titleStr);
 
+	mainViewPort = new ViewPort(maxXVal);
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	mainLayout->addWidget(chartView);
 }
@@ -155,7 +156,10 @@ bool RaceCharts::getMouseStatus()
 	TODO: Right now a single thread has access to a single
 		  chart. When there are multiple threads there will
 		  likely be race conditions. Refactor this later
-
+		
+	Refactor this using the viewPort struct
+	Problems: Would changing view port affect writing data to other
+			  parts of the graph?
 */
 void RaceCharts::writeData(const QPointF& dataPoint) {
 
@@ -164,6 +168,7 @@ void RaceCharts::writeData(const QPointF& dataPoint) {
 		// We can safely clear the old series
 		m_series->clear();
 		m_xAxis->setRange(maxXVal, maxXVal + incVal);
+		mainViewPort->setViewPort(maxXVal, maxXVal + incVal);
 		maxXVal = maxXVal + incVal;
 	}
 
@@ -176,6 +181,7 @@ void RaceCharts::writeData(const QPointF& dataPoint) {
 
 		m_series->clear();
 		m_xAxis->setRange(0, incVal);
+		mainViewPort->setViewPort(0, incVal);
 		maxXVal = incVal;	// Rest
 	}
 
@@ -190,4 +196,5 @@ void RaceCharts::writeData(const QPointF& dataPoint) {
 RaceCharts::~RaceCharts() {
 	delete m_chart;
 	delete m_series;
+	delete mainViewPort;
 }
