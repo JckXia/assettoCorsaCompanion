@@ -27,3 +27,12 @@ void RaceChartSubject::update(unsigned short callerPid , float xCoord) {
 		}
 	}
 }
+
+void RaceChartSubject::updateChartScroll(unsigned short callerPid) {	
+	for (int i = 0; i < m_observers.size(); i++)
+	{
+		if (m_observers[i]->getPid() != callerPid) {
+
+		}
+	}
+}

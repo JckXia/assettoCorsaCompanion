@@ -30,11 +30,18 @@ public:
 	void writeData(const QPointF& dataPoint);
 	void setCursor(const QPointF& cursorPoint);
 	void setCursorOnX(float xCoord);
+
 	void attachRaceChartSubject(RaceChartSubject * rSubject);
+	void setMouseStatus(bool status, QPointF mousePos);
+	QPointF getLastMousePos();
+	void setLastMousePos(QPointF mousePos);
+	bool getMouseStatus();
 	unsigned short getPid();
 	~RaceCharts();
 private:
-	
+
+	QPointF lastMousePos;
+	bool mouseClicked = false;
 	std::vector<std::map<int, float>> lapTelemetry;
 	int currentLapCount = 0;
 	RaceChartSubject* m_subject;

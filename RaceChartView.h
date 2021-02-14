@@ -13,7 +13,8 @@ public:
 	void setRaceChart(RaceCharts* raceChart);
 protected:
 	virtual void mouseMoveEvent(QMouseEvent * event) override;
-	
+	virtual void mousePressEvent(QMouseEvent* event) override;
+	void mouseReleaseEvent(QMouseEvent* event) override;
 private:
 	RaceCharts* m_chart;
 };

@@ -129,6 +129,28 @@ void RaceCharts::setCursorOnX(float xCoord)
 	}
 }
 
+
+void RaceCharts::setMouseStatus(bool status, QPointF mousePos)
+{
+	 
+	this->mouseClicked = status;
+}
+
+void RaceCharts::setLastMousePos(QPointF mousePos)
+{
+	lastMousePos = mousePos;
+}
+
+QPointF RaceCharts::getLastMousePos()
+{
+	return lastMousePos;
+}
+
+bool RaceCharts::getMouseStatus()
+{
+	return mouseClicked;
+}
+
 /*
 	TODO: Right now a single thread has access to a single
 		  chart. When there are multiple threads there will

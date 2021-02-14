@@ -18,6 +18,7 @@ public:
 	void attachRaceChartObv(RaceCharts* raceChart);
 	void update(unsigned short callerPid);
 	void update(unsigned short calledPid, float xCoord);
+	void updateChartScroll(unsigned short callerPid);
 private:
 	QVector<RaceCharts*> m_observers;
 };
