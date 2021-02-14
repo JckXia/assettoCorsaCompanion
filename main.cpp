@@ -19,7 +19,7 @@
 #include "Timer.h"
 #include "SharedFileOut.h"
 
- 
+
 
 #define MAX_X 60000
 
@@ -94,11 +94,11 @@ void callThis(QVector<RaceCharts*> chart) {
 
 	//	chart->writeData(QPointF(1000, (float) gearT));
 	if (gf->status != AC_OFF) {
-	//	qDebug("Current Gear %d\n", pf->gear);
-		int gear = pf->gear == 0 ? 0 : pf->gear - 1; 
+		//	qDebug("Current Gear %d\n", pf->gear);
+		int gear = pf->gear == 0 ? 0 : pf->gear - 1;
 		int normalizedTime = gf->iCurrentTime;
 
-	
+
 		std::thread t1([=]() {
 			chart[0]->writeData(QPointF(normalizedTime, gear));
 			});
@@ -106,11 +106,11 @@ void callThis(QVector<RaceCharts*> chart) {
 			chart[1]->writeData(QPointF(normalizedTime, pf->rpms));
 			});
 		std::thread t3([=]() {
-			chart[2]->writeData(QPointF(normalizedTime,pf->brake));
-		});	
+			chart[2]->writeData(QPointF(normalizedTime, pf->brake));
+			});
 		std::thread t4([=]() {
-			chart[3]->writeData(QPointF(normalizedTime,pf->speedKmh));
-		});
+			chart[3]->writeData(QPointF(normalizedTime, pf->speedKmh));
+			});
 
 		t1.join();
 		t2.join();
@@ -135,36 +135,41 @@ int main(int argc, char* argv[])
 	initGraphicsMap();
 	initStaticMap();
 
-	//	SPageFileStatic* sf = (SPageFileStatic*)static_data.mapFileBuffer;
-
 	QApplication a(argc, argv);
-	//
+
+	RaceChartSubject* chartManager = new RaceChartSubject();
+
 	QWidget* window = new QWidget;
+	window->setWindowTitle("Assetto Corsa Companion");
 
 	QVector<RaceCharts*>chartObjects;
 	const std::string gearChartTitle = "Gears Chart";
 	const std::string gearAxisTitle = "Gear";
-	RaceCharts* gearChart = new RaceCharts(gearChartTitle, gearAxisTitle, MAX_X, 6, nullptr);
+	RaceCharts* gearChart = new RaceCharts(gearChartTitle, gearAxisTitle, MAX_X, 6, nullptr, 1);
+	gearChart->attachRaceChartSubject(chartManager);
 
 	// TODO Extract the car's actual max revs from the static mapped memory
 	const std::string rpmChartTitle = "RPM Chart";
 	const std::string rpmAxisTitle = "RPM";
-	RaceCharts* rpmChart = new RaceCharts(rpmChartTitle, rpmAxisTitle, MAX_X, 6000, nullptr);
+	RaceCharts* rpmChart = new RaceCharts(rpmChartTitle, rpmAxisTitle, MAX_X, 6000, nullptr, 2);
+	rpmChart->attachRaceChartSubject(chartManager);
 
 	const std::string brakeChartTitle = "Brake Chart";
 	const std::string brakeAxisTitle = "Brake Pressure";
-	RaceCharts* brakeChart = new RaceCharts(brakeChartTitle, brakeAxisTitle, MAX_X, 1, nullptr);
+	RaceCharts* brakeChart = new RaceCharts(brakeChartTitle, brakeAxisTitle, MAX_X, 1, nullptr, 3);
+	brakeChart->attachRaceChartSubject(chartManager);
 
 	const std::string speedChartTitle = "Speed(kmh) Chart";
 	const std::string speedAxisTitle = "Speed (km/h)";
-	RaceCharts* speedChart = new RaceCharts(speedChartTitle, speedAxisTitle, MAX_X , 250, nullptr);
-	
+	RaceCharts* speedChart = new RaceCharts(speedChartTitle, speedAxisTitle, MAX_X, 250, nullptr, 4);
+	speedChart->attachRaceChartSubject(chartManager);
+
 
 	chartObjects.push_back(gearChart);
 	chartObjects.push_back(rpmChart);
 	chartObjects.push_back(brakeChart);
 	chartObjects.push_back(speedChart);
-		
+
 
 	QHBoxLayout* mainGrid = new QHBoxLayout;
 
@@ -176,7 +181,7 @@ int main(int argc, char* argv[])
 	vBoxLayout->addWidget(gearChart);
 	vBoxLayout->addWidget(rpmChart);
 
- 
+
 	mainGrid->addLayout(vBoxLayout);
 	mainGrid->addLayout(colTwo);
 	window->setLayout(mainGrid);
