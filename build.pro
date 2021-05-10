@@ -18,5 +18,5 @@ CONFIG += no_fixpath
 INCLUDEPATH += include
 
 HEADERS += ./include/raceChart.h ./include/raceChartSubject.h ./include/sharedFileout.h  ./include/timer.h  ./include/raceChartView.h
-SOURCES += main.cpp  RaceCharts.cpp RaceChartSubject.cpp RaceChartView.cpp
+SOURCES +=  ./src/main.cpp  ./src/RaceCharts.cpp ./src/RaceChartSubject.cpp ./src/RaceChartView.cpp
 QT += charts core gui multimedia widgets

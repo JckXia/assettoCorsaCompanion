@@ -133,7 +133,7 @@ void RaceCharts::setCursorOnX(float xCoord)
 
 void RaceCharts::setMouseStatus(bool status, QPointF mousePos)
 {
-	 
+
 	this->mouseClicked = status;
 }
 
@@ -156,7 +156,7 @@ bool RaceCharts::getMouseStatus()
 	TODO: Right now a single thread has access to a single
 		  chart. When there are multiple threads there will
 		  likely be race conditions. Refactor this later
-		
+
 	Refactor this using the viewPort struct
 	Problems: Would changing view port affect writing data to other
 			  parts of the graph?
