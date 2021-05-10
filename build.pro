@@ -19,5 +19,5 @@ QMAKE_LFLAGS *= /MACHINE:X64
  
 CONFIG += no_fixpath
 HEADERS += Dialog.h event.h  RaceCharts.h RaceChartSubject.h RaceChartView.h SharedFileout.h Timer.h
-SOURCES += main.cpp Dialog.cpp   RaceChartSubject.cpp RaceChartView.cpp
+SOURCES += main.cpp Dialog.cpp  RaceCharts.cpp RaceChartSubject.cpp RaceChartView.cpp
 QT += charts core gui multimedia widgets
