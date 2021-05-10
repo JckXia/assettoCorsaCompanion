@@ -18,7 +18,7 @@
 #include <windows.h>
 #include <thread>
 #include <include/timer.h>
-#include "SharedFileOut.h"
+#include <include/sharedFileOut.h>
 
 
 

@@ -1,5 +1,6 @@
-#include "RaceChartView.h"
+
 #include "qdebug.h"
+#include <include/raceChartView.h>
 QT_USE_NAMESPACE
 
  
