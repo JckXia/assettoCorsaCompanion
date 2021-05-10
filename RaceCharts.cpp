@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <map>
 #include "RaceChartView.h"
-#include "RaceCharts.h"
+#include <include/raceChart.h>
 
 
 QT_CHARTS_USE_NAMESPACE

@@ -1,7 +1,7 @@
 #pragma once
 #ifndef RACE_CHART_VIEW
 #include <QtCharts/QChartView>
-#include "RaceCharts.h"
+#include  <include/raceChart.h>
 
 QT_CHARTS_USE_NAMESPACE
 

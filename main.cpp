@@ -13,10 +13,11 @@
 #include <QtWidgets/QApplication>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QChartView>
-#include "RaceCharts.h"
+#include <include/raceChart.h>
+#include <include/raceChartSubject.h>
 #include <windows.h>
 #include <thread>
-#include "Timer.h"
+#include <include/timer.h>
 #include "SharedFileOut.h"
 
 

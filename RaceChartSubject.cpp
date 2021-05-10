@@ -1,4 +1,4 @@
-#include "RaceChartSubject.h"
+#include <include/raceChartSubject.h>
 #include <QDebug>
 QT_CHARTS_USE_NAMESPACE
 void RaceChartSubject::attachRaceChartObv(RaceCharts* raceChart) {
