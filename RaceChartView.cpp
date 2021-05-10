@@ -20,22 +20,42 @@ void RaceChartView::mouseMoveEvent(QMouseEvent* event) {
 		//Assuming a horizonal drag
 		//Mouse is clicked, this is precieved as a drag motion
 		QPointF lastMousePos = m_chart->getLastMousePos();
-		auto thetaPos = valueGivenSeries.x() - lastMousePos.x();
+		auto thetaPos =  valueGivenSeries.x() - lastMousePos.x();
 		
-		// Here we would need to scroll to the right
+		QValueAxis* xAxis = dynamic_cast<QValueAxis*> (chart()->axisX());
+
 		if (thetaPos >= 0)
 		{
-			chart()->scroll(((chart()->plotArea().width())) / 60000, 0);
+			 
+			qreal beforeVal = xAxis->max();
+			qreal data = (chart()->plotArea().width() + 10000 ) / 60000;
+			chart()->scroll(data, 0);
+			qreal afterVal = xAxis->max();
+			 
 			m_chart->mainViewPort->moveViewPortRight(1);
 		}
 		else {
-		// Scroll ot left, but have to make sure current x coord has to be greater than 0;
+			qDebug() << "Neg Tehta " << thetaPos << endl;
 			auto viewPort = m_chart->mainViewPort->getViewPort();
- 
-			if (viewPort.first > 0) {
-				chart()->scroll((chart()->plotArea().width() * -1) / 60000, 0);
+			//qDebug() << "ViewPort " << viewPort.first << endl;
+			 
+			qreal min = xAxis->min();
+			qreal beforeVal;
+			qreal afterVal;
+			if (  viewPort.first > 0) {
+			//	qDebug() << " What the hec " << xAxis->min() <<  endl;
+				qreal scrollX = (chart()->plotArea().width() - 10000) / 60000;
+
+				 beforeVal = xAxis->min();
+			//	qDebug() << "Data Plot Width " << chart()->plotArea().width() << endl;
+				QValueAxis* axis = dynamic_cast<QValueAxis*>(chart()->axisX());
+
+				qDebug() << "X val " << axis->min() << endl;
+				chart()->scroll(scrollX, 0);
+				 afterVal = xAxis->min();
+				 m_chart->mainViewPort->moveViewPortLeft(1);
 			}
-			m_chart->mainViewPort->moveViewPortLeft(1);
+			 
 		}
 		m_chart->setLastMousePos((QPointF)valueGivenSeries);
 		event->accept();	

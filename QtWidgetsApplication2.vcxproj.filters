@@ -44,12 +44,21 @@
     <ClCompile Include="RaceCharts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RaceChartView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RaceChartSubject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Dialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="RaceCharts.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="RaceChartView.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -61,6 +70,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RaceChartSubject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

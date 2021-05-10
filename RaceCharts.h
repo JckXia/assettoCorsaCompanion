@@ -51,11 +51,15 @@ public:
 			this->rightViewPort = rightViewPort;
 		}
 		void moveViewPortLeft(int tick) {
-			if (leftViewPort - tick >= 0)
-			{
+			if (leftViewPort - tick >= 0) {
 				leftViewPort = leftViewPort - tick;
 				rightViewPort = rightViewPort - tick;
 			}
+			else {
+				leftViewPort = 0;
+				rightViewPort = viewPortSize;
+			}
+			//}
 		}
 
 		void moveViewPortRight(int tick) {

@@ -188,6 +188,7 @@ void RaceCharts::writeData(const QPointF& dataPoint) {
 	lastXCoord = dataPoint.x();
 	m_series->append(dataPoint);
 
+
 	// Get the unordered map from the vector,
 	// then index into the unordered map by the x coordinate(Time stamp)
 	lapTelemetry[currentLapCount].insert({ (int)dataPoint.x(), dataPoint.y() });
