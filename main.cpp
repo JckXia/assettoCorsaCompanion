@@ -8,7 +8,7 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #endif
 
-#include "QtWidgetsApplication2.h"
+
 #include <QtWidgets>
 #include <QtWidgets/QApplication>
 #include <QtCharts/QLineSeries>
