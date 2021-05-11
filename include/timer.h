@@ -1,4 +1,4 @@
-
+// Timer class referenced from this blog here https://vorbrodt.blog/2019/02/25/better-timer-class/
 #include <iostream>
 #include <thread>
 #include <deque>
