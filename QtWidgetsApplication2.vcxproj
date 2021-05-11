@@ -87,6 +87,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="RaceCharts.cpp" />
+    <ClCompile Include="RaceChartSubject.cpp" />
+    <ClCompile Include="RaceChartView.cpp" />
     <QtRcc Include="QtWidgetsApplication2.qrc" />
     <QtUic Include="QtWidgetsApplication2.ui" />
     <QtMoc Include="QtWidgetsApplication2.h" />
@@ -98,6 +100,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="event.h" />
+    <QtMoc Include="RaceChartView.h" />
+    <ClInclude Include="RaceChartSubject.h" />
     <ClInclude Include="Timer.h" />
     <QtMoc Include="RaceCharts.h" />
     <ClInclude Include="SharedFileOut.h" />

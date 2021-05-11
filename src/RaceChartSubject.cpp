@@ -1,4 +1,4 @@
-#include "RaceChartSubject.h"
+#include <include/raceChartSubject.h>
 #include <QDebug>
 QT_CHARTS_USE_NAMESPACE
 void RaceChartSubject::attachRaceChartObv(RaceCharts* raceChart) {
@@ -16,7 +16,7 @@ void RaceChartSubject::update(unsigned short callerPid) {
 	}
 }
 
-void RaceChartSubject::update(unsigned short callerPid , float xCoord) {
+void RaceChartSubject::update(unsigned short callerPid, float xCoord) {
 	for (int i = 0; i < m_observers.size(); i++)
 	{
 		if (m_observers[i]->getPid() != callerPid) {
@@ -28,7 +28,7 @@ void RaceChartSubject::update(unsigned short callerPid , float xCoord) {
 	}
 }
 
-void RaceChartSubject::updateChartScroll(unsigned short callerPid) {	
+void RaceChartSubject::updateChartScroll(unsigned short callerPid) {
 	for (int i = 0; i < m_observers.size(); i++)
 	{
 		if (m_observers[i]->getPid() != callerPid) {

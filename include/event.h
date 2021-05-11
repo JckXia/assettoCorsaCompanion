@@ -49,7 +49,7 @@ private:
 	std::mutex m_mutex;
 	std::condition_variable m_cv;
 };
-
+ 
 class auto_event
 {
 public:

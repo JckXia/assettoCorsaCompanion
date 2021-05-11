@@ -10,7 +10,8 @@
 #include <QPair>
 #include <vector>
 #include <map>
-#include "RaceChartSubject.h"
+#include  <include/raceChartSubject.h>
+
 QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;
 class QChart;
@@ -27,22 +28,22 @@ class RaceCharts : public QWidget
 {
 	Q_OBJECT
 public:
-	RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent,unsigned short pid);
+	RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent, unsigned short pid);
 	void writeData(const QPointF& dataPoint);
 	void setCursor(const QPointF& cursorPoint);
 	void setCursorOnX(float xCoord);
 
-	void attachRaceChartSubject(RaceChartSubject * rSubject);
+	void attachRaceChartSubject(RaceChartSubject* rSubject);
 	void setMouseStatus(bool status, QPointF mousePos);
 	QPointF getLastMousePos();
 	void setLastMousePos(QPointF mousePos);
 	bool getMouseStatus();
 	unsigned short getPid();
 	~RaceCharts();
- 
-	
+
+
 	struct ViewPort {
-		ViewPort(int viewPortSize) : viewPortSize(viewPortSize) , leftViewPort(0), rightViewPort(viewPortSize) {}
+		ViewPort(int viewPortSize) : viewPortSize(viewPortSize), leftViewPort(0), rightViewPort(viewPortSize) {}
 		void setViewPort(int leftViewPort) { this->leftViewPort = leftViewPort; this->rightViewPort = leftViewPort + viewPortSize; };
 		void setViewPort(int leftViewPort, int rightViewPort) {
 			assert(leftViewPort >= 0);
@@ -51,11 +52,15 @@ public:
 			this->rightViewPort = rightViewPort;
 		}
 		void moveViewPortLeft(int tick) {
-			if (leftViewPort - tick >= 0)
-			{
+			if (leftViewPort - tick >= 0) {
 				leftViewPort = leftViewPort - tick;
 				rightViewPort = rightViewPort - tick;
 			}
+			else {
+				leftViewPort = 0;
+				rightViewPort = viewPortSize;
+			}
+			//}
 		}
 
 		void moveViewPortRight(int tick) {
@@ -73,7 +78,7 @@ public:
 	};
 
 	ViewPort* mainViewPort;
-		
+
 	QPointF lastMousePos;
 	bool mouseClicked = false;
 	std::vector<std::map<int, float>> lapTelemetry;
@@ -87,7 +92,9 @@ public:
 	qreal lastXCoord;
 	QMutex m_lock;
 	qreal maxXVal;
+	qreal maxYVal;
 	QValueAxis* m_xAxis;
+	QValueAxis* m_yAxis;
 };
 
 #endif // ! RACE_CHART_H

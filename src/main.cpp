@@ -8,16 +8,17 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #endif
 
-#include "QtWidgetsApplication2.h"
+
 #include <QtWidgets>
 #include <QtWidgets/QApplication>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QChartView>
-#include "RaceCharts.h"
+#include <include/raceChart.h>
+#include <include/raceChartSubject.h>
 #include <windows.h>
 #include <thread>
-#include "Timer.h"
-#include "SharedFileOut.h"
+#include <include/timer.h>
+#include <include/sharedFileOut.h>
 
 
 

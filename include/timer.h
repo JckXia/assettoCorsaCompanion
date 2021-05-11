@@ -87,7 +87,7 @@ public:
 
 	}
 	~Timer() {
-		std::cout << "Cheking data\n";
+
 		m_event.signal();
 		m_thread.join();
 	}

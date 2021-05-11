@@ -1,7 +1,7 @@
 #pragma once
 #ifndef  RaceChartSubject_H
 #include <QVector>
-#include "RaceCharts.h"
+#include <include/raceChart.h>
 
 class RaceCharts;
 /*
