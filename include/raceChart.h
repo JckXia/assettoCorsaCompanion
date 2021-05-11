@@ -92,7 +92,9 @@ public:
 	qreal lastXCoord;
 	QMutex m_lock;
 	qreal maxXVal;
+	qreal maxYVal;
 	QValueAxis* m_xAxis;
+	QValueAxis* m_yAxis;
 };
 
 #endif // ! RACE_CHART_H

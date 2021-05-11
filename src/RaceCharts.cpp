@@ -5,13 +5,13 @@
 #include <QtCharts/QDateTimeAxis>
 #include <QDebug>
 #include <map>
-#include "RaceChartView.h"
+#include <include/raceChartView.h>
 #include <include/raceChart.h>
 
 
 QT_CHARTS_USE_NAMESPACE
 
-RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr, unsigned short pid = 0) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), trace_points(new QScatterSeries), maxXVal(maxX), incVal(maxX), m_pid(pid) {
+RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, qreal maxX, qreal maxY, QWidget* parent = nullptr, unsigned short pid = 0) : QWidget(nullptr), m_chart(new QChart), m_series(new QLineSeries), trace_points(new QScatterSeries), maxXVal(maxX), maxYVal(maxY), incVal(maxX), m_pid(pid) {
 	//	QChartView* chartView = new QChartView(m_chart);
 	RaceChartView* chartView = new RaceChartView(m_chart);
 	std::map<int, float> u;
@@ -39,6 +39,8 @@ RaceCharts::RaceCharts(const std::string& title, const std::string& yAxisTitle, 
 	yAxis->setRange(0, maxY);	// Considering that this is gear ratio, this would be from 0 to 6. (Most cars have 6 gears)
 	yAxis->setTickInterval(1);
 	yAxis->setTitleText(axisStr);
+
+	m_yAxis = yAxis;
 
 	trace_points->setMarkerShape(QScatterSeries::MarkerShapeCircle);
 	trace_points->setMarkerSize(7.5);
@@ -185,10 +187,16 @@ void RaceCharts::writeData(const QPointF& dataPoint) {
 		maxXVal = incVal;	// Rest
 	}
 
+	if (dataPoint.y() > maxYVal)
+	{
+		m_yAxis->setRange(0, dataPoint.y());
+		maxYVal = dataPoint.y();
+	}
+
 	lastXCoord = dataPoint.x();
 	m_series->append(dataPoint);
-
-
+	
+	
 	// Get the unordered map from the vector,
 	// then index into the unordered map by the x coordinate(Time stamp)
 	lapTelemetry[currentLapCount].insert({ (int)dataPoint.x(), dataPoint.y() });
