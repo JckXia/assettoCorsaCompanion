@@ -4,7 +4,7 @@
 It is a Qt Application capable of displaying real time racing sim telemetry data. 
 
 ## Motivation behind this project
-If you are someone like me , who got really into sim racing during the lockdown then you must be familar the pain of not being able to put out consistent lap times. This tool is aimed to solve that problem. By being able to visualize your braking zones and speed in crucial sectors, you will become more consistent and a better driver in races. This is very much a work in progress, and any feedback will be greatly appreciated! 
+If you are someone like me , who got really into sim racing during the lockdown then you must be familar the pain of not being able to put out consistent lap times. This tool is aimed to solve that problem. By being able to visualize your braking zones and speed in crucial sectors, you will become more consistent and a better driver overall. This is very much a work in progress, and any feedback will be greatly appreciated! 
 ## Installation
 
 Under windows, make sure microsoft visual studio 2019 is installed. Then, using the x86_64 terminal type
