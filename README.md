@@ -22,7 +22,7 @@ cd release && build.exe
 ![Screenshot (3)](https://user-images.githubusercontent.com/32422811/117744129-121de980-b1d6-11eb-8617-0eba7828185e.png)
 Currently support braking pressure, rpm, speed and gear data
 
-##How to use
+## How to use
 While the telemetry app is running, start up assetto corsa and start driving. You will see the data points being displayed accordingly.
 
 ## License
