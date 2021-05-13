@@ -10,7 +10,7 @@ If you are someone like me , who got really into sim racing during the lockdown 
 Under windows, make sure microsoft visual studio 2019 is installed. Then, using the x86_64 terminal type
 
 ```bash
-qmake && nmake clean && nmake install
+qmake && nmake clean && nmake
 ```
 To run this application, in the root project run
 ```bash
