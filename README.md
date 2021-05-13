@@ -14,7 +14,7 @@ qmake && nmake clean && nmake
 ```
 To run this application, in the root project run
 ```bash
-cd release && build.exe
+cd release && assettoCorsaCompanion.exe
 ```
 
 ## Features
